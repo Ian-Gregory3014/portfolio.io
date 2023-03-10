@@ -80,3 +80,29 @@ li a {
 #submit {
   width: 60px;
 }
+
+.Links li {
+  float: left;
+  width: 127px;
+  border-right: 1px solid #FFF;
+  font-weight: bold;
+  font-size: .7em;
+  text-align: center;
+  list-style: none;
+}
+.Links li:last-child {
+  width: 132px;
+  border-right-width: 0;
+}
+.Links li a {
+  display: block;
+  height: 25px;
+  line-height: 25px;
+  background-color: #090046;
+  color: #FFF;
+  text-decoration: none;
+}
+.Links li a:hover {
+  background-color: #001151;
+  color: #FFF;
+}
