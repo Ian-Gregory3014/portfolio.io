@@ -7,6 +7,34 @@
     <script src="dropdown.js"></script>
   </head>
   <header class="header">
+    <nav onmouseout="hide()">
+      <ul class="Links">
+        <li>
+          <a href="#" onmouseover="show('list')">Sections</a>
+          <div id="list" onmouseover="show('list')" style="visibility: hidden;">
+          <a href="#">Contact Info</a>
+          <a href="#">Experience</a>
+          <a href="#">Projects</a>
+          <a href="#">Skills</a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+    <button>Change color</button>
+    <script>
+      const btn = document.querySelector("button");
+      let mode = 1;
+      btn.addEventListener("click", () => {
+        if(mode){
+          document.body.style.backgroundColor = `rgb(255, 255, 255)`;
+          mode = 0;
+        }
+        else {
+          document.body.style.backgroundColor = '#252b36';
+          mode = 1;
+        }
+      });
+    </script>
     <ul>
       <li><a href="./about.html">About</a></li>
       <li><a href="./resume.html">Resume</a></li>
