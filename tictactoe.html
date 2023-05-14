@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tic Tac Toe</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #252b36;
+        color: white;
+      }
+      #gameBoard h1 {
+        margin-top: 50px;
+      }
+      #gameBoard table {
+        margin: auto;
+      }
+      #gameBoard td {
+        width: 100px;
+        height: 100px;
+        font-size: 64px;
+        text-align: center;
+        vertical-align: middle;
+        border: 2px solid white;
+        cursor: pointer;
+      }
+      .player1 {
+        color: blue;
+      }
+      .player2 {
+        color: red;
+      }
+      .hidden {
+        display: none;
+      }
+      #Leaderboard {
+        margin: 0 auto;
+        border-collapse: collapse;
+        width: 40%;
+        text-align: center;
+      }
+      #Leaderboard th, #Leaderboard td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      #Leaderboard th {
+        background-color: #398eb2;
+        color: white;
+      }
+      
+    </style>
+  </head>
+  <!--#include virtual="header.html"-->
+  <body>
+    <h1>Tic Tac Toe</h1>
+    <div id="nameInputs">
+      <label for="player1Name">Player 1 Name:</label>
+      <input type="text" id="player1Name">
+      <br>
+      <label for="player2Name">Player 2 Name:</label>
+      <input type="text" id="player2Name">
+      <br>
+      <button onclick="startGame()">Start Game</button>
+    </div>
+    <div id="gameBoard" class="hidden">
+      <p>
+        <span id="player1" class="player1"></span> vs.
+        <span id="player2" class="player2"></span>
+      </p>
+      <table>
+        <tr>
+          <td id="cell1" onclick="makeMove(1)"></td>
+          <td id="cell2" onclick="makeMove(2)"></td>
+          <td id="cell3" onclick="makeMove(3)"></td>
+        </tr>
+        <tr>
+          <td id="cell4" onclick="makeMove(4)"></td>
+          <td id="cell5" onclick="makeMove(5)"></td>
+          <td id="cell6" onclick="makeMove(6)"></td>
+        </tr>
+        <tr>
+          <td id="cell7" onclick="makeMove(7)"></td>
+          <td id="cell8" onclick="makeMove(8)"></td>
+          <td id="cell9" onclick="makeMove(9)"></td>
+        </tr>
+      </table>
+      <p id="message"></p>
+      <button id="restartButton" class="hidden" onclick="restart()">Restart</button>
+    </div>
+    <script>
+      let player1;
+      let player2;
+      let currentPlayer;
+      let movesLeft;
+      let board;
+      function startGame() {
+        // Get the player names from the input fields
+        player1 = document.getElementById("player1Name").value.trim() || "Player 1";
+        player2 = document.getElementById("player2Name").value.trim() || "Player 2";
+        // Hide the name input section and show the game board
+        document.getElementById("nameInputs").classList.add("hidden");
+        document.getElementById("gameBoard").classList.remove("hidden");
+        // Display the player names
+        document.getElementById("player1").textContent = player1;
+        document.getElementById("player2").textContent = player2;
+        // Initialize the game variables
+        currentPlayer = "X";
+        movesLeft = 9;
+        board = ["", "", "", "", "", "", "", "", ""];
+      }
+      function makeMove(cellIndex) {
+        // Check if the cell is empty
+        if (board[cellIndex - 1] === "") {
+          // Update the board and display the move
+          board[cellIndex - 1] = currentPlayer;
+          document.getElementById("cell" + cellIndex).textContent = currentPlayer;
+          // Decrement the number of moves left
+          movesLeft--;
+          console.log(movesLeft);
+          // Check for a win or a tie
+          if (checkWin() || checkTie()) {
+          endGame();
+          } else {
+          // Switch to the other player
+          currentPlayer = (currentPlayer === "X") ? "O" : "X";
+          // Update the message
+          document.getElementById("message").textContent = currentPlayer + "'s turn";
+          }
+          
+        }
+      }
+      function checkWin() {
+      // Check all possible winning combinations
+        return (board[0] === currentPlayer && board[1] === currentPlayer && board[2] === currentPlayer) ||
+        (board[3] === currentPlayer && board[4] === currentPlayer && board[5] === currentPlayer) ||
+        (board[6] === currentPlayer && board[7] === currentPlayer && board[8] === currentPlayer) ||
+        (board[0] === currentPlayer && board[3] === currentPlayer && board[6] === currentPlayer) ||
+        (board[1] === currentPlayer && board[4] === currentPlayer && board[7] === currentPlayer) ||
+        (board[2] === currentPlayer && board[5] === currentPlayer && board[8] === currentPlayer) ||
+        (board[0] === currentPlayer && board[4] === currentPlayer && board[8] === currentPlayer) ||
+        (board[2] === currentPlayer && board[4] === currentPlayer && board[6] === currentPlayer);
+      }
+      function checkTie() {
+        return movesLeft === 0 && !checkWin();
+      }
+      function endGame() {
+        // Display the game result and show the restart button
+        if (checkWin()) {
+          if(currentPlayer == "X"){
+            currentPlayer = player1;
+          }
+          else{
+            currentPlayer = player2;
+          }
+        document.getElementById("message").textContent = currentPlayer + " wins!";
+        } else {
+        document.getElementById("message").textContent = "It's a tie!";
+        }
+        document.getElementById("restartButton").classList.remove("hidden");
+        // Remove the click event listeners from the cells
+        for (let i = 1; i <= 9; i++) {
+        document.getElementById("cell" + i).removeAttribute("onclick");
+        }
+      }
+      function restart() {
+        // Reset the game variables and board
+        currentPlayer = "X";
+        movesLeft = 9;
+        board = ["", "", "", "", "", "", "", "", ""];
+        // Reset the board display
+        for (let i = 1; i <= 9; i++) {
+        document.getElementById("cell" + i).textContent = "";
+        }
+        // Reset the message and hide the restart button
+        document.getElementById("message").textContent = currentPlayer + "'s turn";
+        document.getElementById("restartButton").classList.add("hidden");
+        // Add the click event listeners back to the cells
+        for (let i = 1; i <= 9; i++) {
+        document.getElementById("cell" + i).setAttribute("onclick", "makeMove(" + i + ")");
+        }
+      }
+      </script>
+    <h1>Leaderboard</h1>
+    <table id="Leaderboard">
+      <tr>
+        <th>Rank</th>
+        <th>Name</th>
+        <th>Wins</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Ian</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Dalton</td>
+        <td>4</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Jaron</td>
+        <td>2</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Nathan</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Dillon</td>
+        <td>1</td>
+      </tr>
+    </table>
+  </body>
+</html>

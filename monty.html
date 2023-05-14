@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <!--#include virtual="header.html"-->
+  <head>
+    <title>Brady Hall Game</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #252b36;
+        color: white;
+      }
+      h1 {
+        margin-top: 50px;
+      }
+      .door {
+        background-color: #398eb2;
+        color: white;
+        border: none;
+        padding: 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 24px;
+        margin: 20px;
+        cursor: pointer;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Brady Hall Game</h1>
+    <p>Select one of the doors:</p>
+    <div>
+      <input type="button" class="door" id="door1" onclick="revealButton(1)" value="Door 1"/>
+      <input type="button" class="door" id="door2" onclick="revealButton(2)" value="Door 2"/>
+      <input type="button" class="door" id="door3" onclick="revealButton(3)" value="Door 3"/>
+    </div>
+    
+    <script>
+      let bradyGarvinIndex = Math.floor(Math.random() * 3) + 1;
+      console.log(bradyGarvinIndex);
+      let revealedIndex;
+      let index;
+      function revealButton(index) {
+        
+        if (index === bradyGarvinIndex) {
+          // If the selected button is Brady Garvin, reveal one of the other two buttons randomly
+          revealedIndex = Math.floor(Math.random() * 3) + 1;
+          while (revealedIndex === index) {
+            revealedIndex = Math.floor(Math.random() * 3) + 1;
+          }
+        } else {
+          // If the selected button is not Brady Garvin, reveal the goat button
+          revealedIndex = 6 - index - bradyGarvinIndex;
+        }
+        console.log(`revealing door ${revealedIndex}`);
+        document.getElementById("stay").classList.remove("hidden");
+        document.getElementById("switch").classList.remove("hidden");
+        document.getElementById("door"+revealedIndex).value="Goat";
+      }
+      function reveal(choice) {
+        document.getElementById("door"+bradyGarvinIndex).value="Brady Garvin";
+        for(let i = 1; i<4; i++){
+          if (i !=bradyGarvinIndex) {
+            document.getElementById("door"+i).value="Goat";
+          }
+        }
+      }
+    </script>
+    <div>
+      <button class="door hidden" id="stay" onclick="reveal(1)">Stay</button>
+      <button class="door hidden" id="switch" onclick="reveal(2)">Switch</button>
+    </div>
+    
+  </body>
+</html>
